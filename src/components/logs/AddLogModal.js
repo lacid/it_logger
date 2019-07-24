@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addLog } from '../../actions/logActions';
+import TechSelectOptions from '../techs/TechSelectOptions';
 import M from 'materialize-css/dist/js/materialize.min.js';
 
-const AddLogModal = () => {
+const AddLogModal = ({ addLog }) => {
   const [message, setMessage] = useState('');
   const [attention, setAttention] = useState(false);
   const [tech, setTech] = useState('');
@@ -10,7 +14,16 @@ const AddLogModal = () => {
     if (message === '' || tech === '') {
       M.toast({ html: 'Please enter a message and tech' });
     } else {
-      console.log(message, tech, attention);
+      const newLog = {
+        message,
+        attention,
+        tech,
+        date: new Date()
+      };
+
+      addLog(newLog);
+
+      M.toast({ html: `Log added by ${tech}` });
 
       // Clear Fields
       setMessage('');
@@ -48,9 +61,7 @@ const AddLogModal = () => {
               <option value='' disabled>
                 Select Technician
               </option>
-              <option value='John Doe'>John Doe</option>
-              <option value='Sam Smith'>Sam Smith</option>
-              <option value='Sarah Wilson'>Sarah Wilson</option>
+              <TechSelectOptions />
             </select>
           </div>
         </div>
@@ -90,4 +101,11 @@ const modalStyle = {
   height: '75%'
 };
 
-export default AddLogModal;
+AddLogModal.propTypes = {
+  addLog: PropTypes.func.isRequired
+};
+
+export default connect(
+  null, // we are not bringing any state just calling an action<<
+  { addLog }
+)(AddLogModal);

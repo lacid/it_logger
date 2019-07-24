@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux'; // 1connect redux to component
 import Preloader from '../layout/Preloader';
 import LogItem from './LogItem';
+import PropTypes from 'prop-types';
+import { getLogs } from '../../actions/logActions';
 
-const Logs = () => {
-  const [logs, setLogs] = useState([]);
-  const [loading, setLoading] = useState(false);
+const Logs = ({ log: { logs, loading }, getLogs }) => {
+  // destructure destructured // 4.props.. actions
 
   useEffect(() => {
     getLogs();
     // eslint-disable-next-line
   }, []);
 
-  const getLogs = async () => {
-    setLoading(true);
-    const res = await fetch('/logs'); // works because of proxy in pckg.json
-    const data = await res.json();
-
-    setLogs(data);
-    setLoading(false);
-  };
-
-  if (loading) {
+  if (loading || logs === null) {
     return <Preloader />;
   }
 
@@ -38,4 +31,18 @@ const Logs = () => {
   );
 };
 
-export default Logs;
+Logs.propTypes = {
+  log: PropTypes.object.isRequired,
+  getLogs: PropTypes.func.isRequired
+};
+
+// 3bringing in the stuff from state
+const mapStateToProps = state => ({
+  log: state.log // log a is a prop
+});
+
+export default connect(
+  mapStateToProps,
+  { getLogs } // +4actions as 2nd parameter
+)(Logs);
+// 2export of redux connected component
