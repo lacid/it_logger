@@ -7,6 +7,8 @@ import { getLogs } from '../../actions/logActions';
 
 const Logs = ({ log: { logs, loading }, getLogs }) => {
   // destructure destructured // 4.props.. actions
+  // log is from rootReducer, index.js, we are pulling logs,loading from it from reducer
+  // getLogs is from actions, we import it, see^^
 
   useEffect(() => {
     getLogs();
@@ -18,12 +20,12 @@ const Logs = ({ log: { logs, loading }, getLogs }) => {
   }
 
   return (
-    <ul className='collection with-header'>
-      <li className='collection-header'>
-        <h4 className='center'>System Logs</h4>
+    <ul className="collection with-header">
+      <li className="collection-header">
+        <h4 className="center">System Logs</h4>
       </li>
       {!loading && logs.length === 0 ? (
-        <p className='center'>No logs to show..</p>
+        <p className="center">No logs to show..</p>
       ) : (
         logs.map(log => <LogItem log={log} key={log.id} />)
       )}

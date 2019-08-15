@@ -123,7 +123,7 @@ export const searchLogs = text => async dispatch => {
   try {
     setLoading();
 
-    const res = await fetch(`/logs?q=${text}`); // ?q= .. query
+    const res = await fetch(`/logs?q=${text}`); // ?q= ..query; magic from API itself
     const data = await res.json();
 
     dispatch({

@@ -20,7 +20,7 @@ export const getTechs = () => async dispatch => {
   }
 };
 
-// Get techs from server; POST
+// Add tech to the server; POST
 export const addTech = tech => async dispatch => {
   try {
     setLoading();
